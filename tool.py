@@ -44,5 +44,3 @@ def generate_itemSimOnTypeSet():
 def test():	
 	#dumpPickle(critics,'/abc.pkl')
 	print r
-#~ test()
-#generate_itemSimOnTypeSet()

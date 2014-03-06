@@ -7,7 +7,6 @@ import cPickle as pickle
 import pprint
 import tool
 
-
 class Recommender:
 	def __init__(self, outputFile, pathStr, trainingSet, predictingSet):
 		self.outputFile=os.getcwd()+'//results/'+outputFile
@@ -212,31 +211,6 @@ class UserBasedRecommender(Recommender):
 		else:
 			predict=totals/simSums
 		return predict
-	
-	#~ def predictRating(self, user, movie):
-		#~ totals=0.0
-		#~ simSums=0.0
-		#~ sim=0.0
-		#~ predict=0
-		#~ matchlist=self.topMatches(self.prefs, user, similarityMeasure=similarity.sim_pearson_improved,n=80)
-		#~ for other in matchlist:
-			#~ if other[1]==user:
-				#~ continue
-			#~ sim=other[0]
-			#~ if sim<=0:
-				#~ continue
-			#~ if movie not in self.prefs[user] or self.prefs[user][movie]==0:
-				#~ if movie in self.prefs[other[1]]:
-					#~ totals+=self.prefs[other[1]][movie]*sim
-					#~ simSums+=sim
-		#~ print "simSums",simSums
-		#~ print "totals",totals
-		#~ if simSums==0:
-			#~ predict=4.0
-		#~ else:
-			#~ predict=totals/simSums
-		#~ print predict
-		#~ return predict
 		
 	def getRecommendedItems(self,user):
 		prefs=self.loadTrainingSet()

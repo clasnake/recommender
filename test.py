@@ -101,6 +101,4 @@ def t4():
 	except IOError as err:
 		print ('File error: '+str(err))
 
-#~ cal()
-#~ test()
 t4()
