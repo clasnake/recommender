@@ -19,7 +19,7 @@ def sim_distance(prefs,item1,item2):
 
 # Returns the Pearson correlation coefficient for p1 and p2
 def sim_pearson(prefs,p1,p2):
-  # Get the list of mutually rated items
+    # Get the list of mutually rated items
 	si={}
 	for item in prefs[p1]: 
 		if item in prefs[p2]: si[item]=1

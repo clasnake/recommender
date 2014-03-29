@@ -15,12 +15,13 @@ critics={'cla':{'forest gump':8.8,'god http://www.baidu.com/father':8.6,'chunkin
 }
 
 def cal():
-	rec=recommender.ItemBasedRecommender('cosine_improved_n150.txt')
+	rec=recommender.ItemBasedRecommender(outputFile='cosine_improved_n150.txt', similarityMeasure=similarity.sim_cosine)
+	print rec.similarityMeasure;
 	rec.loadTrainingSet()
 	rec.loadPredictingSet()
 	rec.loadMovieTag()
 	#~ print rec.movieTag
-	rec.calculateSimilarItems(150,'cosine_improved_n150.pkl')
+# 	rec.calculateSimilarItems(150,'cosine_improved_n150.pkl')
 	
 	
 def test():
@@ -100,5 +101,8 @@ def t4():
 				#movies[itemId]=title
 	except IOError as err:
 		print ('File error: '+str(err))
-
-t4()
+def t5():
+	print similarity.sim_cosine(critics, 'cla', 'kuuga')
+	
+#~ test()
+cal()

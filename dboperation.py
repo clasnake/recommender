@@ -2,7 +2,6 @@ import sqlite3 as sqlite
 import os
 
 class db:
-    
     def setdb(self,dbfile):
         self.con=sqlite.connect(dbfile)
         self.con.execute('create table if not exists item(id,title)')

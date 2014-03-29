@@ -7,15 +7,17 @@ import cPickle as pickle
 import pprint
 import tool
 
+
 class Recommender:
-	def __init__(self, outputFile, pathStr, trainingSet, predictingSet):
-		self.outputFile=os.getcwd()+'//results/'+outputFile
+	def __init__(self, outputFile, similarityMeasure, pathStr, trainingSet, predictingSet):
+		self.outputFile = os.getcwd() + '//results/' + outputFile
 		self.pathStr=pathStr
 		self.trainingSet=trainingSet
 		self.predictingSet=predictingSet
 		self.prefs={}
 		self.predictPrefs=[]
 		self.movieTag={}
+		self.similarityMeasure = similarityMeasure
 		
 	def loadTrainingSet(self):
 		prefs={}
@@ -84,8 +86,8 @@ class Recommender:
 	
 		
 class ItemBasedRecommender(Recommender):
-	def __init__(self,outputFile):
-		Recommender.__init__(self,outputFile, pathStr=os.getcwd()+'//data-v/',trainingSet='training_set.txt',predictingSet='predict.txt')
+	def __init__(self,outputFile, similarityMeasure):
+		Recommender.__init__(self,outputFile, similarityMeasure=similarity.sim_cosine_improved, pathStr=os.getcwd()+'//data-v/',trainingSet='training_set.txt',predictingSet='predict.txt')
 		self.itemMatch=None
 		
 	def calculateSimilarItems(self,n,resultFile):
@@ -105,7 +107,7 @@ class ItemBasedRecommender(Recommender):
 			c+=1
 			if c%5==0: print "%d / %d" % (c,len(prefsOnItem))
 			# Find the most similar items to this one
-			scores=self.topMatches(prefsOnItem,item,similarityMeasure=similarity.sim_cosine_improved,n=n)
+			scores=self.topMatches(prefsOnItem,item,similarityMeasure=self.similarityMeasure,n=n)
 			result[item]=scores
 		tool.dumpPickle(result,resultFile)
 		#return result
@@ -168,8 +170,8 @@ class ItemBasedRecommender(Recommender):
 		return rankings
 	
 class UserBasedRecommender(Recommender):
-	def __init__(self, outputFile):
-		Recommender.__init__(self,outputFile,pathStr=os.getcwd()+'//data-v/',trainingSet='training_set.txt',predictingSet='predict.txt')
+	def __init__(self, outputFile, similarityMeasure):
+		Recommender.__init__(self,outputFile,similarityMeasure=similarity.sim_cosine_improved, pathStr=os.getcwd()+'//data-v/',trainingSet='training_set.txt',predictingSet='predict.txt')
 		self.userMatch=None
 		
 	def calculateSimilarUsers(self, n, resultFile):
@@ -181,7 +183,7 @@ class UserBasedRecommender(Recommender):
 			c+=1
 			if c%5==0:
 				print "%d / %d" % (c, len(self.prefs))
-			scores=self.topMatches(self.prefs, user, similarityMeasure=similarity.sim_cosine_improved,n=n)
+			scores=self.topMatches(self.prefs, user, similarityMeasure=self.similarityMeasure,n=n)
 			result[user]=scores
 			#~ print result[user]
 		tool.dumpPickle(result,resultFile)	
@@ -211,6 +213,31 @@ class UserBasedRecommender(Recommender):
 		else:
 			predict=totals/simSums
 		return predict
+	
+	#~ def predictRating(self, user, movie):
+		#~ totals=0.0
+		#~ simSums=0.0
+		#~ sim=0.0
+		#~ predict=0
+		#~ matchlist=self.topMatches(self.prefs, user, similarityMeasure=similarity.sim_pearson_improved,n=80)
+		#~ for other in matchlist:
+			#~ if other[1]==user:
+				#~ continue
+			#~ sim=other[0]
+			#~ if sim<=0:
+				#~ continue
+			#~ if movie not in self.prefs[user] or self.prefs[user][movie]==0:
+				#~ if movie in self.prefs[other[1]]:
+					#~ totals+=self.prefs[other[1]][movie]*sim
+					#~ simSums+=sim
+		#~ print "simSums",simSums
+		#~ print "totals",totals
+		#~ if simSums==0:
+			#~ predict=4.0
+		#~ else:
+			#~ predict=totals/simSums
+		#~ print predict
+		#~ return predict
 		
 	def getRecommendedItems(self,user):
 		prefs=self.loadTrainingSet()
@@ -232,10 +259,10 @@ class UserBasedRecommender(Recommender):
 					#sum of similarities
 					simSums.setdefault(item,0)
 					simSums[item]+=sim
-                
+		
 		#create the normalized list
 		rankings=[(total/simSums[item],item) for item,total in totals.items()]
-    
+		
 		#return the sorted list
 		rankings.sort()
 		rankings.reverse()

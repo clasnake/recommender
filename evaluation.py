@@ -2,9 +2,10 @@ from __future__ import division
 import os
 import recommender
 from math import sqrt
+import similarity
 
 class Evaluation:
-	def __init__(self,testFile,rec=recommender.ItemBasedRecommender('/u2.base'),pathStr=os.getcwd()+'//ml-100k',userFile='/u.user'):		
+	def __init__(self,testFile,rec=recommender.ItemBasedRecommender('/u2.base', similarity.sim_cosine),pathStr=os.getcwd()+'//ml-100k',userFile='/u.user'):		
 		self.testFile=testFile
 		self.rec=rec
 		self.pathStr=pathStr
