@@ -6,20 +6,20 @@ from math import sqrt
 		
 def sim_distance(prefs,item1,item2):
 	#get the list of shared items
-    si={};
-    for item in prefs[item1]:
-        if item in prefs[item2]:
-            si[item]=1;
-    #if they have no shared items,return 0;
-    if len(si)==0:return 0;
-    
-    #Add the squares of all the differences
-    sum_of_squares=sum([pow(prefs[item1][item]-prefs[item2][item],2) for item in prefs[item1] if item in prefs[item2]])
-    return 1/(1+sqrt(sum_of_squares))
+	si={};
+	for item in prefs[item1]:
+		if item in prefs[item2]:
+			si[item]=1;
+	#if they have no shared items,return 0;
+	if len(si)==0:return 0;
+	
+	#Add the squares of all the differences
+	sum_of_squares=sum([pow(prefs[item1][item]-prefs[item2][item],2) for item in prefs[item1] if item in prefs[item2]])
+	return 1/(1+sqrt(sum_of_squares))
 
 # Returns the Pearson correlation coefficient for p1 and p2
 def sim_pearson(prefs,p1,p2):
-    # Get the list of mutually rated items
+	# Get the list of mutually rated items
 	si={}
 	for item in prefs[p1]: 
 		if item in prefs[p2]: si[item]=1
@@ -29,18 +29,18 @@ def sim_pearson(prefs,p1,p2):
 
 	# Sum calculations
 	n=len(si)
-  
+
 	# Sums of all the preferences
 	sum1=float(sum([prefs[p1][it] for it in si]))
 	sum2=float(sum([prefs[p2][it] for it in si]))
-  
+
 	# Sums of the squares
 	sum1Sq=float(sum([pow(prefs[p1][it],2) for it in si]))
 	sum2Sq=float(sum([pow(prefs[p2][it],2) for it in si]))
-  
+
 	# Sum of the products
 	pSum=float(sum([prefs[p1][it]*prefs[p2][it] for it in si]))
-  
+
 	# Calculate r (Pearson score)
 	num=float(pSum-(sum1*sum2/n))
 	den=float(sqrt((sum1Sq-pow(sum1,2)/n)*(sum2Sq-pow(sum2,2)/n)))
@@ -56,45 +56,45 @@ def sim_pearson1(prefs,person1,person2):
 	for item in prefs[person1]:
 		if item in prefs[person2]:
 			si[item]=1
-    #if they have no shared items, return 0
+	#if they have no shared items, return 0
 	if len(si)==0:return 0
-    
-    #find the number of elements
+
+	#find the number of elements
 	n=len(si)
-    
-    #add up all the prefs
+
+	#add up all the prefs
 	sum1=sum([prefs[person1][item] for item in si])
 	sum2=sum([prefs[person2][item] for item in si])
-    
-    #calculate the mean of the critics of p1 and p2
+
+	#calculate the mean of the critics of p1 and p2
 	mean1=sum1/n;
 	mean2=sum2/n;
-    
-    #calculate the covariance
+
+	#calculate the covariance
 	covariance=sum([(prefs[person1][item]-mean1)*(prefs[person2][item]-mean2) for item in si])/n
 
-    #calculate the standard_deviation
+	#calculate the standard_deviation
 	sd1=sqrt(sum([pow(prefs[person1][item]-mean1,2) for item in si])/n)
 	sd2=sqrt(sum([pow(prefs[person2][item]-mean2,2) for item in si])/n)
-    
+
 	if sd1*sd2==0:return 0
-    #calculate the pearson correlation improved
+	#calculate the pearson correlation improved
 	pearson=(covariance/(sd1*sd2))
 	return pearson
- 
+
 def sim_pearson_improved(prefs,person1,person2):
 	#get the list of shared items
 	si={}
 	for item in prefs[person1]:
 		if item in prefs[person2]:
 			si[item]=1
-    #if they have no shared items, return 0
+	#if they have no shared items, return 0
 	if len(si)==0:return 0
-    
-    #find the number of elements
+
+	#find the number of elements
 	n=len(si)
-    
-    #get the count of items rated by person
+
+	#get the count of items rated by person
 	count1=0
 	count2=0
 	for person in prefs[person1]:
@@ -103,26 +103,25 @@ def sim_pearson_improved(prefs,person1,person2):
 		count2+=1
 
 	totalCount=count1+count2-n
-    
-    #add up all the prefs
+
+	#add up all the prefs
 	sum1=sum([prefs[person1][item] for item in si])
 	sum2=sum([prefs[person2][item] for item in si])
-    
-    #calculate the mean of the critics of p1 and p2
+
+	#calculate the mean of the critics of p1 and p2
 	mean1=sum1/n;
 	mean2=sum2/n;
-    
-    #calculate the covariance
-	covariance=sum([(prefs[person1][item]-mean1)*(prefs[person2][item]-mean2) for item in si])/n
 
-    #calculate the standard_deviation
+	#calculate the covariance
+	covariance=sum([(prefs[person1][item]-mean1)*(prefs[person2][item]-mean2) for item in si])/n
+	#calculate the standard_deviation
 	sd1=sqrt(sum([pow(prefs[person1][item]-mean1,2) for item in si])/n)
 	sd2=sqrt(sum([pow(prefs[person2][item]-mean2,2) for item in si])/n)
-    
+
 	if sd1*sd2==0:return 0
-    #calculate the pearson correlation improved
+	#calculate the pearson correlation improved
 	pearson=(covariance/(sd1*sd2))*(float(n)/float(totalCount))
-    #print n,count,float(n)/float(count),pearson
+	#print n,count,float(n)/float(count),pearson
 	return pearson
 
 def sim_cosine(prefs,item1,item2):
