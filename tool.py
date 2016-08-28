@@ -49,9 +49,3 @@ def generate_itemSimOnTypeSet():
                 key1, key2, s
                 result[key1][key2] = s
     dumpPickle(result, '/itemSimOnType.pkl')
-
-
-def test():
-    #dumpPickle(critics,'/abc.pkl')
-    print
-    r

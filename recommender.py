@@ -47,19 +47,6 @@ class Recommender:
             print('File error: ' + str(err))
         self.predictPrefs = prefs
 
-    # def loadMovieTag(self):
-    #     tags = {}
-    #     try:
-    #         with open(os.getcwd() + '//data-v/' + 'movie_tag.txt') as tag:
-    #             for line in tag:
-    #                 line = line.replace('\r\r\n', '')
-    #                 tagline = line.split('\t')
-    #                 theTag = tagline[1].split(',')
-    #                 tags[tagline[0]] = theTag
-    #
-    #     except IOError as err:
-    #         print('File error: ' + str(err))
-    #     self.movieTag = tags
 
     def transformPrefs(self, prefs):
         result = {}

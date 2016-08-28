@@ -1,8 +1,5 @@
 from __future__ import division
 from math import sqrt
-#import tool
-
-#itemSimSet=tool.loadPickle('/itemSimOnType.pkl') 
 
 def sim_distance(prefs, item1, item2):
     #get the list of shared items
