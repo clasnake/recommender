@@ -38,6 +38,8 @@ class Evaluation:
     def evalByAccuracy(self):
         sumForMAE = 0
         sumForRMSE = 0
+        sumForMBDnum = 0
+        sumForMBDdenum = 0
         count = 0
         testingSet = self.loadTestFileOnUser()
         for user in testingSet:
@@ -46,18 +48,23 @@ class Evaluation:
             for recItem in recList:
                 if recItem[1] in testingSet[user]:
                     count += 1
-                    dif = abs(recItem[0] - testingSet[user][recItem[1]])
+                    dif = recItem[0] - testingSet[user][recItem[1]]
                     print count, ":", dif
-                    sumForRMSE += dif ** 2
-                    sumForMAE += dif
+                    sumForRMSE += abs(dif) ** 2
+                    sumForMAE += abs(dif)
+                    sumForMBDnum += dif
+                    sumForMBDdenum += testingSet[user][recItem[1]]
 
         MAE = sumForMAE / count
         RMSE = sqrt(sumForRMSE / count)
-        return MAE, RMSE, count
+        MBD = (float(sumForMBDnum) / count) / (float(sumForMBDdenum) / count) * 100 
+        return MAE, RMSE, MBD, count
 
     def evalByAccuracy2(self):
         sumForMAE = 0
         sumForRMSE = 0
+        sumForMBDnum = 0
+        sumForMBDdenum = 0
         count = 0
         testingSet = self.loadTestFileOnUser()
         for user in testingSet:
@@ -67,11 +74,14 @@ class Evaluation:
                 for recItem in recList:
                     if recItem[1] == item:
                         count += 1
-                        dif = abs(recItem[0] - testingSet[user][recItem[1]])
+                        dif = recItem[0] - testingSet[user][recItem[1]]
                         print count, ":", dif
-                        sumForRMSE += dif ** 2
-                        sumForMAE += dif
+                        sumForRMSE += abs(dif) ** 2
+                        sumForMAE += abs(dif)
+                        sumForMBDnum += dif
+                        sumForMBDdenum += testingSet[user][recItem[1]]
 
         MAE = sumForMAE / count
         RMSE = sqrt(sumForRMSE / count)
-        return MAE, RMSE, count
+        MBD = (float(sumForMBDnum) / count) / (float(sumForMBDdenum) / count) * 100 
+        return MAE, RMSE, MBD, count
